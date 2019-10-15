@@ -1,20 +1,4 @@
 import React from "react";
-import FileViewer from 'react-file-viewer';
-import { CustomErrorComponent } from 'custom-error';
-import fileUrl from './test_pdf.pdf';
-
-/*
-FileViewer supported type
-----------------
-Images: png, jpeg, gif, bmp, including 360-degree images
-pdf
-csv
-xslx
-docx
-Video: mp4, webm
-Audio: mp3
-
-*/
 
 export function convertDataToBinary(base64Data) {
   // win.atob === raw char
@@ -41,29 +25,22 @@ export function convertDataToBlob(data, mimeType) {
   return new Blob([arr], {type: mimeType});
 }
 
+function openInNewTab(url) {
+  let win = window.open(url, '_blank');
+  win.focus();
+}
+
 function App() {
-  //const fileUrl = 'http://www.pdf995.com/samples/pdf.pdf';
-
-  
 
 
-  //const file = require('./file.json');
-  const mimeType = 'pdf';
-  //const data = convertDataToBlob(file, mimeType);
-  //const tmpPath = window.URL.createObjectURL(data);
+  const file = require('./file.json');
+  const mimeType = 'application/pdf'; // proper
+  const data = convertDataToBlob(file.data, mimeType);
 
-  const onError = (e) => {
-    console.error(e);
-  }
+  const url = window.URL.createObjectURL(data);
 
   return <div className="App">
-    <FileViewer
-      fileType={mimeType}
-      //filePath={tmpPath}
-      filePath={fileUrl}
-      errorComponent={CustomErrorComponent}
-      onError={onError}/>
-    );
+    <div onClick={() => {openInNewTab(url)}}>Something To Click On</div>
   </div>;
 }
 
